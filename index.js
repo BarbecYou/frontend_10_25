@@ -1,20 +1,53 @@
 
 function adatMegjelenites(termekLista){
-    document.getElementById('eredmenyLista').textContent = ''
+    document.getElementById('megjelenitRow').textContent = ''
     termekLista.forEach(product => {
 
-        let listItem = document.createElement('li')
+        let megjelenitCol = document.createElement('div')
+        megjelenitCol.classList.add('col')
+        let megjelenitCard = document.createElement('div')
+        megjelenitCard.classList.add('card')
+        let megjelenitCardBody = document.createElement('div')
+        megjelenitCardBody.classList.add('card-body')
+        let megjelenitCardTitle = document.createElement('div')
+        megjelenitCardTitle.classList.add('card-title')
+        let megjelenitCardSubTitle = document.createElement('div')
+        megjelenitCardSubTitle.classList.add('card-subtitle')
+        let megjelenitCardText = document.createElement('div')
+        megjelenitCardText.classList.add('card-text')
+        let megjelenitCardTextUL = document.createElement('ul')
+        megjelenitCardTextUL.classList.add('megjelenitCardTextUL')
+        let megjelenitCardImage = document.createElement('img')
+        megjelenitCardImage.classList.add('card-img-top')
 
         let i = 0;
         for (let key in product){
-            if (i != 0 && i <= 8){
-                listItem.innerHTML += key + ': ' + product[key] + '<br/>'
+            switch (i){
+                case 1:
+                    megjelenitCardTitle.textContent = product[key]
+                    break;
+                case 2:
+                    megjelenitCardSubTitle.textContent = product[key]
+                    break;
+                case 9:
+                    megjelenitCardImage.src = product[key]
+                    break;
+                default:
+                    let li = document.createElement('li')
+                    li.textContent = key + ': ' + product[key]
+                    megjelenitCardTextUL.appendChild(li)
+                    break;
             }
             i++
         }
-        listItem.innerHTML += '<br/>'
-
-        document.getElementById('eredmenyLista').appendChild(listItem);
+        megjelenitCardText.appendChild(megjelenitCardTextUL)
+        megjelenitCardBody.appendChild(megjelenitCardImage)
+        megjelenitCardBody.appendChild(megjelenitCardTitle)
+        megjelenitCardBody.appendChild(megjelenitCardSubTitle)
+        megjelenitCardBody.appendChild(megjelenitCardText)
+        megjelenitCard.appendChild(megjelenitCardBody)
+        megjelenitCol.appendChild(megjelenitCard)
+        document.getElementById('megjelenitRow').appendChild(megjelenitCol)
     })
 }
 
@@ -35,11 +68,13 @@ document.getElementById('btnAbc').addEventListener('click', () => {
     })
     .then(data => {
         productsCopy = [...data.products]
-        adatMegjelenites(productsCopy.sort((a, b) => {return String(a.title) - String(b.title)}))
+        adatMegjelenites(productsCopy.sort((a, b) => 
+        (a.title > b.title) ? 1 : ((b.title > a.title) ? -1 : 0)))
+        console.log(productsCopy);
     })
 })
 
-document.getElementById('btnNovekvo').addEventListener('click', () => {
+document.getElementById('btnCsokkeno').addEventListener('click', () => {
     fetch('/products.json')
     .then(res => {
         return res.json()

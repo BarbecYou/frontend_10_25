@@ -1,0 +1,28 @@
+.megjelenit {
+    margin: 10px;
+}
+
+.elvalaszto{
+    border-top: 1.5px solid black;
+    opacity: 1;
+    width: 80vw;
+    margin-left: 10px;
+    margin-top: 20px;
+}
+
+.megjelenitCardTextUL{
+    list-style: none;
+}
+
+.card-title {
+    margin-top: 10px;
+    margin-bottom: 30px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.card-subtitle {
+    margin-top: 300px;
+    text-align: center;
+    border-bottom: 1px solid black;
+}
