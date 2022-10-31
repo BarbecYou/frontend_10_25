@@ -114,10 +114,11 @@ function generateCategories() {
     })
 }
 
-
+let selectedCategory = 'no-filter'
 
 document.getElementById('category-filter').addEventListener('change', (e) => {
-    const selectedCategory = e.target.value
+    selectedCategory = e.target.value
+    console.log(selectedCategory)
 })
 
 document.getElementById('btnMind').addEventListener('click', () => {
@@ -126,7 +127,12 @@ document.getElementById('btnMind').addEventListener('click', () => {
             return res.json()
         })
         .then(data => {
-            adatMegjelenites(data.products)
+            productsCopy = [...data.products]
+            if (selectedCategory == 'no-filter'){
+                adatMegjelenites(productsCopy)
+            } else {
+                adatMegjelenites(productsCopy.filter(a => a.category == selectedCategory))
+            }
         })
 })
 
@@ -137,8 +143,16 @@ document.getElementById('btnAbc').addEventListener('click', () => {
     })
     .then(data => {
         productsCopy = [...data.products]
-        adatMegjelenites(productsCopy.sort((a, b) => 
-        (a.title > b.title) ? 1 : ((b.title > a.title) ? -1 : 0)))
+        if (selectedCategory == 'no-filter') {
+            adatMegjelenites(productsCopy.sort((a, b) => 
+            (a.title.toLowerCase() > b.title.toLowerCase()) ? 1 : 
+            ((b.title.toLowerCase() > a.title.toLowerCase()) ? -1 : 0)))
+        } else {
+            adatMegjelenites(productsCopy.filter(a => a.category == selectedCategory).sort((a, b) => 
+            (a.title.toLowerCase() > b.title.toLowerCase()) ? 1 : 
+            ((b.title.toLowerCase() > a.title.toLowerCase()) ? -1 : 0)))
+        }
+       
     })
 })
 
@@ -149,7 +163,11 @@ document.getElementById('btnCsokkeno').addEventListener('click', () => {
     })
     .then(data => {
         productsCopy = [...data.products]
-        adatMegjelenites(productsCopy.sort((a, b) => b.price - a.price))
+        if (selectedCategory == 'no-filter') {
+            adatMegjelenites(productsCopy.sort((a, b) => b.price - a.price))
+        } else {
+            adatMegjelenites(productsCopy.filter(a => a.category == selectedCategory).sort((a, b) => b.price - a.price))
+        }
     })
 })
 
@@ -160,9 +178,16 @@ document.getElementById('btnLeiras').addEventListener('click', () => {
     })
     .then(data => {
         productsCopy = [...data.products]
-        adatMegjelenites(productsCopy.filter
-            (x => x.description.toLowerCase().includes(
-                document.getElementById('textLeiras').value.toLowerCase())))
+        if (selectedCategory == 'no-filter'){
+            adatMegjelenites(productsCopy.filter
+                (x => x.description.toLowerCase().includes(
+                    document.getElementById('textLeiras').value.toLowerCase())))
+        }else {
+            adatMegjelenites(productsCopy.filter
+                (x => x.description.toLowerCase().includes(
+                    document.getElementById('textLeiras').value.toLowerCase()) && x.category == selectedCategory))
+        }
+        
     })
 })
 
@@ -173,7 +198,13 @@ document.getElementById('btnAjanlat').addEventListener('click', () => {
     })
     .then(data => {
         productsCopy = [...data.products]
-        adatMegjelenites(productsCopy.filter
-            (x => x.price < 100).sort((a,b) => b.rating - a.rating))
+        if (selectedCategory == 'no-filter'){
+            adatMegjelenites(productsCopy.filter
+                (x => x.price < 100).sort((a,b) => b.rating - a.rating))
+        } else {
+            adatMegjelenites(productsCopy.filter
+                (x => x.price < 100 && x.category == selectedCategory).sort((a,b) => b.rating - a.rating))
+        }
+        
     })
 })
