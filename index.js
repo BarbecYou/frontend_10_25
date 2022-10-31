@@ -102,7 +102,6 @@ function generateCategories() {
             for (let key in product){
                 if (key == 'category'){
                     categoriesSet.add(product[key])
-                    console.log(categoriesSet)
                 }
             }
         })
@@ -110,11 +109,16 @@ function generateCategories() {
             let option = document.createElement('option')
             option.text = category
             option.value = category
-            console.log(option)
             document.getElementById('category-filter').appendChild(option)
         })
     })
 }
+
+
+
+document.getElementById('category-filter').addEventListener('change', (e) => {
+    const selectedCategory = e.target.value
+})
 
 document.getElementById('btnMind').addEventListener('click', () => {
         fetch('/products.json')
@@ -135,7 +139,6 @@ document.getElementById('btnAbc').addEventListener('click', () => {
         productsCopy = [...data.products]
         adatMegjelenites(productsCopy.sort((a, b) => 
         (a.title > b.title) ? 1 : ((b.title > a.title) ? -1 : 0)))
-        console.log(productsCopy);
     })
 })
 
